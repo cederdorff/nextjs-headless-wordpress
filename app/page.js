@@ -1,12 +1,10 @@
 import Link from "next/link";
 import PostList from "@/components/PostList";
+import { getLatestPosts } from "@/lib/wordpress";
 import styles from "./page.module.css";
 
 export default async function Home() {
-  const response = await fetch(
-    `${process.env.WORDPRESS_URL}/wp-json/wp/v2/posts?per_page=3`
-  );
-  const posts = await response.json();
+  const posts = await getLatestPosts();
 
   return (
     <main>
