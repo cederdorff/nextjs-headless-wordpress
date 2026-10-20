@@ -12,6 +12,9 @@ export default async function PostPage({ params }) {
     notFound();
   }
 
+  // With ?_embed, WordPress includes the featured image in _embedded
+  const image = post._embedded?.["wp:featuredmedia"]?.[0];
+
   const date = formatDate(post.date);
 
   return (
@@ -22,6 +25,13 @@ export default async function PostPage({ params }) {
           {date}
         </time>
         <h1 dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+        {image && (
+          <img
+            className="featured-image"
+            src={image.source_url}
+            alt={image.alt_text}
+          />
+        )}
         <div
           className="wp-content"
           dangerouslySetInnerHTML={{ __html: post.content.rendered }}
