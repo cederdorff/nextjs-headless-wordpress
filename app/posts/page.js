@@ -1,3 +1,6 @@
+import PostCard from "@/components/PostCard";
+import styles from "./page.module.css";
+
 export const metadata = {
   title: "Posts",
 };
@@ -9,11 +12,15 @@ export default async function PostsPage() {
   return (
     <main>
       <h1>Posts</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.title.rendered}</li>
-        ))}
-      </ul>
+      {posts.length === 0 ? (
+        <p>There are no posts yet.</p>
+      ) : (
+        <section className={styles.grid}>
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </section>
+      )}
     </main>
   );
 }
