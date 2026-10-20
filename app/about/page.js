@@ -1,12 +1,27 @@
+import { notFound } from "next/navigation";
+
 export const metadata = {
   title: "About",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const response = await fetch(
+    `${process.env.WORDPRESS_URL}/wp-json/wp/v2/pages?slug=about`
+  );
+  const pages = await response.json();
+  const page = pages[0];
+
+  if (!page) {
+    notFound();
+  }
+
   return (
     <main>
-      <h1>About</h1>
-      <p>The About page from WordPress will be shown here.</p>
+      <h1 dangerouslySetInnerHTML={{ __html: page.title.rendered }} />
+      <div
+        className="wp-content"
+        dangerouslySetInnerHTML={{ __html: page.content.rendered }}
+      />
     </main>
   );
 }
