@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import Link from "next/link";
+import AuthStatus from "@/components/AuthStatus";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -21,13 +23,12 @@ export default function Header() {
           <li>
             <Link href="/profile">Profile</Link>
           </li>
-          <li>
-            <Link href="/signup">Sign up</Link>
-          </li>
-          <li>
-            <Link href="/login">Log in</Link>
-          </li>
         </ul>
+        {/* AuthStatus reads the cookies of the request, so it waits for the request.
+            Suspense lets the rest of the header render right away. */}
+        <Suspense fallback={null}>
+          <AuthStatus />
+        </Suspense>
       </nav>
     </header>
   );
