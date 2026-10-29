@@ -1,10 +1,18 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { getPostBySlug } from "@/lib/wordpress";
 import { formatDate } from "@/lib/format";
 import styles from "./page.module.css";
 
 export default async function PostPage({ params }) {
+  // Only logged-in users can read a post
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
